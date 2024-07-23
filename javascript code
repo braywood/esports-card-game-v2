@@ -1,0 +1,91 @@
+// Sample card data with images
+const allCards = [
+    { name: 'Player1', game: 'CS2', overall: 85, image: 'images/player1.jpg' },
+    { name: 'Player2', game: 'Valorant', overall: 88, image: 'images/player2.jpg' },
+    { name: 'Player3', game: 'Rocket League', overall: 82, image: 'images/player3.jpg' },
+    { name: 'Player4', game: 'League of Legends', overall: 90, image: 'images/player4.jpg' },
+    { name: 'Player5', game: 'Dota', overall: 95, image: 'images/player5.jpg' },
+    { name: 'Player6', game: 'Apex', overall: 78, image: 'images/player6.jpg' },
+    { name: 'Player7', game: 'Call of Duty', overall: 80, image: 'images/player7.jpg' },
+    // Add more cards as needed
+];
+
+let collection = [];
+
+// Event listeners
+document.getElementById('openPackButton').addEventListener('click', openPack);
+document.querySelectorAll('.fieldPosition').forEach(button => {
+    button.addEventListener('click', () => draftCard(button));
+});
+
+function openPack() {
+    const newCards = [];
+    for (let i = 0; i < 9; i++) {
+        const card = getRandomCard();
+        newCards.push(card);
+        collection.push(card);
+    }
+    displayCards(newCards, 'packContainer');
+    displayCards(collection, 'collectionContainer');
+}
+
+function draftCard(button) {
+    const draftCards = [];
+    for (let i = 0; i < 6; i++) {
+        draftCards.push(getRandomCard());
+    }
+    displayDraftCards(draftCards, button);
+}
+
+function getRandomCard() {
+    // Weighted random selection based on card overall
+    const weights = allCards.map(card => {
+        if (card.overall > 90) return 1; // Legendary
+        if (card.overall > 85) return 3; // Rare
+        return 6; // Common
+    });
+    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+    let random = Math.random() * totalWeight;
+    for (let i = 0; i < weights.length; i++) {
+        if (random < weights[i]) {
+            return allCards[i];
+        }
+        random -= weights[i];
+    }
+}
+
+function displayCards(cards, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    cards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card', 'gradient-background');
+        cardElement.innerHTML = `
+            <img src="${card.image}" alt="${card.name}">
+            <p>${card.name}</p>
+            <p>${card.game}</p>
+            <p>Overall: ${card.overall}</p>
+        `;
+        container.appendChild(cardElement);
+    });
+}
+
+function displayDraftCards(cards, button) {
+    const container = document.getElementById('draftContainer');
+    container.innerHTML = '';
+    cards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card', 'gradient-background');
+        cardElement.innerHTML = `
+            <img src="${card.image}" alt="${card.name}">
+            <p>${card.name}</p>
+            <p>${card.game}</p>
+            <p>Overall: ${card.overall}</p>
+        `;
+        cardElement.addEventListener('click', () => {
+            button.textContent = `${card.name} (${card.overall})`;
+            container.innerHTML = '';
+        });
+        container.appendChild(cardElement);
+    });
+}
