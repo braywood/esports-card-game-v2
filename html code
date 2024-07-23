@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esports Card Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Esports Card Game</h1>
+    <button id="openPackButton">Open Pack</button>
+    <div id="packContainer"></div>
+    <h2>Your Collection</h2>
+    <div id="collectionContainer"></div>
+    <h2>Draft</h2>
+    <div id="draftField">
+        <button class="fieldPosition">Position 1</button>
+        <button class="fieldPosition">Position 2</button>
+        <button class="fieldPosition">Position 3</button>
+        <!-- Add more positions as needed -->
+    </div>
+    <div id="draftContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>
